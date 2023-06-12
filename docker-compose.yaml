@@ -38,12 +38,16 @@ services:
     image: mongo:6.0.6
     volumes:
       - vacancies_db_volume:/data/db
+      - ./mongodb_create_user.js:/docker-entrypoint-initdb.d/mongodb_create_user.js
     ports:
       - 27017:27017
     environment:
-      MONGO_INITDB_ROOT_USERNAME: analytics_service
+      MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
-      # MONGO_INITDB_DATABASE: vacancies_db
+
+      MONGO_USER: analytics_service
+      MONGO_PASSWORD: password
+      MONGO_DATABASE: vacancies_db
 
 volumes:
   analytics_db_mysql_volume:
