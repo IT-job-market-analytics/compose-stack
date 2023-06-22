@@ -28,8 +28,7 @@ services:
       - 25672:25672
       - 15672:15672
     volumes:
-      - rabbitmq_volume:/bitnami
-      - ./rabbitmq_create_queues.sh:/docker-entrypoint-initdb.d/create_queues.sh
+      - ./rabbitmq_create_objects.sh:/docker-entrypoint-initdb.d/rabbitmq_create_objects.sh
     environment:
       RABBITMQ_USERNAME: analytics_service
       RABBITMQ_PASSWORD: password
@@ -51,5 +50,4 @@ services:
 
 volumes:
   analytics_db_mysql_volume:
-  rabbitmq_volume:
   vacancies_db_volume:
