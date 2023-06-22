@@ -31,15 +31,25 @@ function create_binding {
     }'
 }
 
+# scheduler
 create_queue scheduled-tasks-queue
-create_queue imported-vacancies-queue
-create_queue new-vacancies-queue
-create_queue telegram-notifications-queue
-
 create_direct_exchange scheduled-tasks-exchange
 
-create_queue vacancy-import-scheduled-tasks-queue
-create_queue analytics-builder-scheduled-tasks-queue
+## consumers of messages produces by scheduler
 
+### tasks to vacancy-import-service
+create_queue vacancy-import-scheduled-tasks-queue
 create_binding vacancy-import-scheduled-tasks-queue
+
+### tasks to analytics-builder-service
+create_queue analytics-builder-scheduled-tasks-queue
 create_binding analytics-builder-scheduled-tasks-queue
+
+# vacancy-import-service
+create_queue imported-vacancies-queue
+
+# vacancy-storage-service
+create_queue new-vacancies-queue
+
+# vacancy-notifier-service
+create_queue telegram-notifications-queue
