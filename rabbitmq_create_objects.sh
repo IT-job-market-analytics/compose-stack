@@ -9,7 +9,47 @@ function create_queue {
     }'
 }
 
+function create_direct_exchange {
+    curl --request PUT \
+    --url "http://localhost:15672/api/exchanges/%2F/$1" \
+    --header 'Authorization: Basic YW5hbHl0aWNzX3NlcnZpY2U6cGFzc3dvcmQ=' \
+    --data-raw '{
+        "type": "direct",
+        "auto_delete": false,
+        "durable": true,
+        "arguments": {}
+    }'
+}
+
+function create_binding {
+    curl --request POST \
+    --url "http://localhost:15672/api/bindings/%2F/e/$1/q/$2" \
+    --header 'Authorization: Basic YW5hbHl0aWNzX3NlcnZpY2U6cGFzc3dvcmQ=' \
+   --data-raw "{
+          \"routing_key\": \"$3\",
+          \"arguments\": {}
+      }"
+}
+
+# scheduler
 create_queue scheduled-tasks-queue
+create_direct_exchange scheduled-tasks-exchange
+
+## consumers of messages produces by scheduler
+
+### tasks to vacancy-import-service
+create_queue vacancy-import-scheduled-tasks-queue
+create_binding scheduled-tasks-exchange vacancy-import-scheduled-tasks-queue vacancy-import-service-task
+
+### tasks to analytics-builder-service
+create_queue analytics-builder-scheduled-tasks-queue
+create_binding scheduled-tasks-exchange analytics-builder-scheduled-tasks-queue analytics-builder-service-task
+
+# vacancy-import-service
 create_queue imported-vacancies-queue
+
+# vacancy-storage-service
 create_queue new-vacancies-queue
+
+# vacancy-notifier-service
 create_queue telegram-notifications-queue
