@@ -23,12 +23,12 @@ function create_direct_exchange {
 
 function create_binding {
     curl --request POST \
-    --url "http://localhost:15672/api/bindings/%2F/e/scheduled-tasks-exchange/q/$1" \
+    --url "http://localhost:15672/api/bindings/%2F/e/$2/q/$1" \
     --header 'Authorization: Basic YW5hbHl0aWNzX3NlcnZpY2U6cGFzc3dvcmQ=' \
-    --data-raw '{
-        "routing_key": "",
-        "arguments": {}
-    }'
+   --data-raw "{
+          \"routing_key\": \"$3\",
+          \"arguments\": {}
+      }"
 }
 
 # scheduler
@@ -39,11 +39,11 @@ create_direct_exchange scheduled-tasks-exchange
 
 ### tasks to vacancy-import-service
 create_queue vacancy-import-scheduled-tasks-queue
-create_binding vacancy-import-scheduled-tasks-queue
+create_binding vacancy-import-scheduled-tasks-queue scheduled-tasks-exchange vacancy-import-service-task
 
 ### tasks to analytics-builder-service
 create_queue analytics-builder-scheduled-tasks-queue
-create_binding analytics-builder-scheduled-tasks-queue
+create_binding analytics-builder-scheduled-tasks-queue scheduled-tasks-exchange analytics-builder-service-task
 
 # vacancy-import-service
 create_queue imported-vacancies-queue
