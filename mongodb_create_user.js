@@ -20,10 +20,3 @@ a = analyticsDb.createUser({
             }
         ]
 });
-
-
-console.log(123);
-console.log(process.env.MONGO_USER);
-console.log(process.env.MONGO_PASSWORD);
-console.log(process.env.MONGO_DATABASE);
-console.log(a);
