@@ -9,17 +9,16 @@ a = analyticsDb.createUser({
     user: process.env.MONGO_USER,
     pwd: process.env.MONGO_PASSWORD,
     roles:
-    // ["dbAdmin","readWrite"]
-    [
-        {
-            role: "dbAdmin",
-            db: process.env.MONGO_DATABASE
-        },
-        // {
-        //     role: "readWrite",
-        //     db: process.env.MONGO_DATABASE
-        // }
-    ]
+        [
+            {
+                role: "dbAdmin",
+                db: process.env.MONGO_DATABASE
+            },
+            {
+                role: "readWrite",
+                db: process.env.MONGO_DATABASE
+            }
+        ]
 });
 
 
