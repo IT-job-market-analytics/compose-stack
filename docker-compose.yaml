@@ -50,8 +50,6 @@ services:
       
   vacancy-import-service:
     image: itjobmarketanalytics/vacancy-import-service:dev
-    ports:
-      - "8080:8080"
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
 
