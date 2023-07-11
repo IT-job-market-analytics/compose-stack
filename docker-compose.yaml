@@ -3,6 +3,7 @@ version: '3.6'
 ## ports:
 ## 3306 - analytics-db (3306)
 ## 4369, 5672, 25672, 15672 - rabbitmq
+## 8081 - rate-limiter
 
 services:
   analytics-db:
@@ -52,7 +53,13 @@ services:
     image: itjobmarketanalytics/vacancy-import-service:dev
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
-
+      
+  rate-limiter:
+    image: itjobmarketanalytics/rate-limiter:dev
+    ports:
+      - 8081:8080
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
 
 volumes:
   analytics_db_mysql_volume:
