@@ -61,6 +61,11 @@ services:
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
 
+  vacancy-notifier-service:
+    image: 'itjobmarketanalytics/vacancy-notifier-service:dev'
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
 volumes:
   analytics_db_mysql_volume:
   vacancies_db_volume:
