@@ -12,7 +12,7 @@ services:
     command: --max-seeks-for-key=1
     restart: always
     volumes:
-      - analytics_db_mysql_volume:/var/lib/mysql    
+      - analytics_db_mysql_volume:/var/lib/mysql
     ports:
       - 3306:3306
     environment:
@@ -48,12 +48,12 @@ services:
       MONGO_USER: analytics_service
       MONGO_PASSWORD: password
       MONGO_DATABASE: vacancies_db
-      
+
   vacancy-import-service:
     image: itjobmarketanalytics/vacancy-import-service:dev
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
-      
+
   rate-limiter:
     image: itjobmarketanalytics/rate-limiter:dev
     ports:
@@ -63,6 +63,11 @@ services:
 
   vacancy-notifier-service:
     image: 'itjobmarketanalytics/vacancy-notifier-service:dev'
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+  vacancy-storage-service:
+    image: 'itjobmarketanalytics/vacancy-storage-service:dev'
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
