@@ -71,6 +71,13 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
+  rest-api:
+    image: itjobmarketanalytics/rest-api:dev
+    ports:
+      - 8080:8080
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+
 volumes:
   analytics_db_mysql_volume:
   vacancies_db_volume:
