@@ -54,6 +54,11 @@ services:
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
 
+  scheduler-service:
+    image: itjobmarketanalytics/scheduler-service:dev
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+
   rate-limiter:
     image: itjobmarketanalytics/rate-limiter:dev
     ports:
