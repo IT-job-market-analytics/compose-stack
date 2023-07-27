@@ -76,6 +76,11 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
+  telegram-notification-service:
+    image: 'itjobmarketanalytics/telegram-notification-service:dev'
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
   rest-api:
     image: itjobmarketanalytics/rest-api:dev
     ports:
