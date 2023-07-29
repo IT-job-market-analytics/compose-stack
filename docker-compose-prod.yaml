@@ -67,14 +67,17 @@ services:
       - "SPRING_PROFILES_ACTIVE=prod"
 
   vacancy-notifier-service:
-    image: 'itjobmarketanalytics/vacancy-notifier-service:dev'
+    image: itjobmarketanalytics/vacancy-notifier-service:prod
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
 
   vacancy-storage-service:
-    image: 'itjobmarketanalytics/vacancy-storage-service:dev'
+    image: itjobmarketanalytics/vacancy-storage-service:prod
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
+      - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
 
   telegram-notification-service:
     image: 'itjobmarketanalytics/telegram-notification-service:dev'
