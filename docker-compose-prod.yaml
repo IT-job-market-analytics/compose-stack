@@ -50,9 +50,10 @@ services:
       MONGO_DATABASE: vacancies_db
 
   vacancy-import-service:
-    image: itjobmarketanalytics/vacancy-import-service:dev
+    image: itjobmarketanalytics/vacancy-import-service:prod
     environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
 
   rate-limiter:
     image: itjobmarketanalytics/rate-limiter:dev
@@ -72,11 +73,9 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
 
   rest-api:
-    image: itjobmarketanalytics/rest-api:dev
+    image: itjobmarketanalytics/rest-api:prod
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
-      - "MYSQL_URL=${MYSQL_URL}"
-      - "MYSQL_USERNAME=${MYSQL_USERNAME}"
       - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
 
 volumes:
