@@ -54,6 +54,11 @@ services:
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
 
+  scheduler-service:
+    image: itjobmarketanalytics/scheduler-service:dev
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+
   rate-limiter:
     image: itjobmarketanalytics/rate-limiter:dev
     ports:
@@ -68,6 +73,11 @@ services:
 
   vacancy-storage-service:
     image: 'itjobmarketanalytics/vacancy-storage-service:dev'
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+  telegram-notification-service:
+    image: 'itjobmarketanalytics/telegram-notification-service:dev'
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
