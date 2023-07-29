@@ -80,9 +80,11 @@ services:
       - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
 
   telegram-notification-service:
-    image: 'itjobmarketanalytics/telegram-notification-service:dev'
+    image: itjobmarketanalytics/telegram-notification-service:prod
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
+      - "BOT_TOKEN=${BOT_TOKEN}"
 
   rest-api:
     image: itjobmarketanalytics/rest-api:prod
