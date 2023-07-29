@@ -55,6 +55,12 @@ services:
       - "SPRING_PROFILES_ACTIVE=prod"
       - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
 
+  scheduler-service:
+    image: itjobmarketanalytics/scheduler-service:prod
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
+
   rate-limiter:
     image: itjobmarketanalytics/rate-limiter:dev
     ports:
@@ -69,6 +75,11 @@ services:
 
   vacancy-storage-service:
     image: 'itjobmarketanalytics/vacancy-storage-service:dev'
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+  telegram-notification-service:
+    image: 'itjobmarketanalytics/telegram-notification-service:dev'
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
