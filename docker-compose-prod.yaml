@@ -62,11 +62,9 @@ services:
       - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
 
   rate-limiter:
-    image: itjobmarketanalytics/rate-limiter:dev
-    ports:
-      - 8081:8080
+    image: itjobmarketanalytics/rate-limiter:prod
     environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
+      - "SPRING_PROFILES_ACTIVE=prod"
 
   vacancy-notifier-service:
     image: 'itjobmarketanalytics/vacancy-notifier-service:dev'
