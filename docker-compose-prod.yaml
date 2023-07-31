@@ -1,9 +1,7 @@
 version: '3.6'
 
 ## ports:
-## 3306 - analytics-db (3306)
-## 4369, 5672, 25672, 15672 - rabbitmq
-## 8081 - rate-limiter
+## 80 - web-ui
 
 services:
   analytics-db:
@@ -13,8 +11,6 @@ services:
     restart: always
     volumes:
       - analytics_db_mysql_volume:/var/lib/mysql
-    ports:
-      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: analytics_db
@@ -39,8 +35,6 @@ services:
     volumes:
       - vacancies_db_volume:/data/db
       - ./mongodb_create_user.js:/docker-entrypoint-initdb.d/mongodb_create_user.js
-    ports:
-      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
