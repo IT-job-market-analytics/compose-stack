@@ -24,12 +24,8 @@ jobs:
           fail_on_empty: false
           sort_keys: false
 
-      ### will be deleted
-      - name: show .env file
-        run: cat .env
-
       - name: pull images
         run: docker-compose -f docker-compose-prod.yaml pull
 
-      - name: rebuild containers
-        run: docker-compose -f docker-compose-prod.yaml up --build -d
+      - name: restart containers
+        run: docker-compose -f docker-compose-prod.yaml up -d
