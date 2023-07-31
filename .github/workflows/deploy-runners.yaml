@@ -1,0 +1,35 @@
+name: Deploy!
+
+on:
+  push:
+    branches: [prod]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          envkey_MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          envkey_RABBIT_PASSWORD: ${{ secrets.RABBIT_PASSWORD }}
+          envkey_BOT_NAME: ${{ secrets.BOT_NAME }}
+          envkey_BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          file_name: .env
+          directory: "./"
+          fail_on_empty: false
+          sort_keys: false
+
+      ### will be deleted
+      - name: show .env file
+        run: cat .env
+
+      - name: pull images
+        run: docker-compose -f docker-compose-prod.yaml pull
+
+      - name: rebuild containers
+        run: docker-compose -f docker-compose-prod.yaml up --build -d

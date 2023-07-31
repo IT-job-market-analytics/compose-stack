@@ -1,0 +1,105 @@
+version: '3.6'
+
+## ports:
+## 3306 - analytics-db (3306)
+## 4369, 5672, 25672, 15672 - rabbitmq
+## 8081 - rate-limiter
+
+services:
+  analytics-db:
+    image: mysql:8.0
+    platform: linux/amd64
+    command: --max-seeks-for-key=1
+    restart: always
+    volumes:
+      - analytics_db_mysql_volume:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: analytics_db
+      MYSQL_USER: analytics_service
+      MYSQL_PASSWORD: password
+
+  rabbitmq:
+    image: bitnami/rabbitmq:3.12.0
+    ports:
+      - 4369:4369
+      - 5672:5672
+      - 25672:25672
+      - 15672:15672
+    volumes:
+      - ./rabbitmq_create_objects.sh:/docker-entrypoint-initdb.d/rabbitmq_create_objects.sh
+    environment:
+      RABBITMQ_USERNAME: analytics_service
+      RABBITMQ_PASSWORD: password
+
+  vacancies-db:
+    image: mongo:6.0.6
+    volumes:
+      - vacancies_db_volume:/data/db
+      - ./mongodb_create_user.js:/docker-entrypoint-initdb.d/mongodb_create_user.js
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+      MONGO_USER: analytics_service
+      MONGO_PASSWORD: password
+      MONGO_DATABASE: vacancies_db
+
+  vacancy-import-service:
+    image: itjobmarketanalytics/vacancy-import-service:prod
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
+
+  scheduler-service:
+    image: itjobmarketanalytics/scheduler-service:prod
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
+
+  rate-limiter:
+    image: itjobmarketanalytics/rate-limiter:prod
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  vacancy-notifier-service:
+    image: itjobmarketanalytics/vacancy-notifier-service:prod
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
+
+  vacancy-storage-service:
+    image: itjobmarketanalytics/vacancy-storage-service:prod
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
+      - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
+
+  telegram-notification-service:
+    image: itjobmarketanalytics/telegram-notification-service:prod
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
+      - "BOT_TOKEN=${BOT_TOKEN}"
+      - "BOT_NAME=${BOT_NAME}"
+
+  rest-api:
+    image: itjobmarketanalytics/rest-api:prod
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
+
+  web-ui:
+    image: itjobmarketanalytics/web-ui:prod
+    ports:
+      - "80:8080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+volumes:
+  analytics_db_mysql_volume:
+  vacancies_db_volume:
