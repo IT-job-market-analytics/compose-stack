@@ -105,6 +105,12 @@ services:
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
 
+  analytics-builder-service:
+    image: 'itjobmarketanalytics/analytics-builder-service:dev'
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
 volumes:
   analytics_db_mysql_volume:
   vacancies_db_volume:
