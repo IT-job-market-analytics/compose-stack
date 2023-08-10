@@ -23,6 +23,7 @@ services:
 
   rabbitmq:
     image: bitnami/rabbitmq:3.12.0
+    restart: always    
     ports:
       - 4369:4369
       - 5672:5672
@@ -36,6 +37,7 @@ services:
 
   vacancies-db:
     image: mongo:6.0.6
+    restart: always    
     volumes:
       - vacancies_db_volume:/data/db
       - ./mongodb_create_user.js:/docker-entrypoint-initdb.d/mongodb_create_user.js
@@ -51,16 +53,19 @@ services:
 
   vacancy-import-service:
     image: itjobmarketanalytics/vacancy-import-service:dev
+    restart: always    
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
 
   scheduler-service:
     image: itjobmarketanalytics/scheduler-service:dev
+    restart: always    
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
 
   rate-limiter:
     image: itjobmarketanalytics/rate-limiter:dev
+    restart: always    
     ports:
       - 8081:8080
     environment:
@@ -68,21 +73,25 @@ services:
 
   vacancy-notifier-service:
     image: 'itjobmarketanalytics/vacancy-notifier-service:dev'
+    restart: always    
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
   vacancy-storage-service:
     image: 'itjobmarketanalytics/vacancy-storage-service:dev'
+    restart: always    
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
   telegram-notification-service:
     image: 'itjobmarketanalytics/telegram-notification-service:dev'
+    restart: always    
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
   rest-api:
     image: itjobmarketanalytics/rest-api:dev
+    restart: always    
     ports:
       - 8080:8080
     environment:
@@ -90,10 +99,17 @@ services:
 
   web-ui:
     image: itjobmarketanalytics/web-ui:dev
+    restart: always    
     ports:
       - 8082:8080
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
+
+  analytics-builder-service:
+    image: 'itjobmarketanalytics/analytics-builder-service:dev'
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
 
 volumes:
   analytics_db_mysql_volume:
