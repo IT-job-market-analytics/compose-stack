@@ -19,6 +19,7 @@ services:
 
   rabbitmq:
     image: bitnami/rabbitmq:3.12.0
+    restart: always    
     ports:
       - 4369:4369
       - 5672:5672
@@ -32,6 +33,7 @@ services:
 
   vacancies-db:
     image: mongo:6.0.6
+    restart: always    
     volumes:
       - vacancies_db_volume:/data/db
       - ./mongodb_create_user.js:/docker-entrypoint-initdb.d/mongodb_create_user.js
@@ -45,29 +47,34 @@ services:
 
   vacancy-import-service:
     image: itjobmarketanalytics/vacancy-import-service:prod
+    restart: always    
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
       - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
 
   scheduler-service:
     image: itjobmarketanalytics/scheduler-service:prod
+    restart: always    
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
       - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
 
   rate-limiter:
     image: itjobmarketanalytics/rate-limiter:prod
+    restart: always    
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
 
   vacancy-notifier-service:
     image: itjobmarketanalytics/vacancy-notifier-service:prod
+    restart: always    
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
       - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
 
   vacancy-storage-service:
     image: itjobmarketanalytics/vacancy-storage-service:prod
+    restart: always    
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
       - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
@@ -75,6 +82,7 @@ services:
 
   telegram-notification-service:
     image: itjobmarketanalytics/telegram-notification-service:prod
+    restart: always    
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
       - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
@@ -83,6 +91,7 @@ services:
 
   rest-api:
     image: itjobmarketanalytics/rest-api:prod
+    restart: always    
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
       - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
@@ -91,6 +100,7 @@ services:
     image: itjobmarketanalytics/web-ui:prod
     ports:
       - "80:8080"
+    restart: always      
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
 
