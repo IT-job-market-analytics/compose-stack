@@ -94,6 +94,15 @@ services:
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
 
+  analytics-builder-service:
+    image: 'itjobmarketanalytics/analytics-builder-service:prod'
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
+      - "RABBIT_PASSWORD=${RABBIT_PASSWORD}"
+      - "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
+
 volumes:
   analytics_db_mysql_volume:
   vacancies_db_volume:
